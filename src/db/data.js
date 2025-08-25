@@ -12,9 +12,35 @@ const dados = axios.get(URL)
   })
 
  
-const dadosResumo = await dados
+const dadosResumo = await dados;
 
 const deputado = (dadosResumo.dados).map(({id, nome, siglaPartido, siglaUf, urlFoto}) => 
     ({id, nome, siglaPartido, siglaUf, urlFoto}))
 
-export default deputado;
+
+
+export async function fetchDeputado(id) {
+  try {
+    const response = await axios.get(URL+'/'+id
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function fetchDespesas(id, mes="") {
+  try {
+    const response = await axios.get(URL+'/'+id+"/despesas"+mes
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+
+export default deputado
+
+
