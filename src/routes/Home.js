@@ -1,13 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import deputados from "../db/data";
+import dadosResumo from "../api/data";
 import Card from "../components/Card";
 import "./Home.css";
+
 
 var filtroNome = []
 function BuscarDeputados(valorInput, valorPartido, valorEstado){
 
-  const dados = deputados;
+  const dados = dadosResumo.deputados;
   let nome, partido, estado
   nome = valorInput;
   partido = valorPartido;

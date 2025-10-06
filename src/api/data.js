@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "https://dadosabertos.camara.leg.br/api/v2/deputados";
+const URL = "http://localhost:3000/api/v1/deputados/";
 
 
 const dados = axios.get(URL)
@@ -14,14 +14,10 @@ const dados = axios.get(URL)
  
 const dadosResumo = await dados;
 
-const deputado = (dadosResumo.dados).map(({id, nome, siglaPartido, siglaUf, urlFoto}) => 
-    ({id, nome, siglaPartido, siglaUf, urlFoto}))
-
-
 
 export async function fetchDeputado(id) {
   try {
-    const response = await axios.get(URL+'/'+id
+    const response = await axios.get(URL+id
     );
     return response.data;
   } catch (error) {
@@ -29,9 +25,9 @@ export async function fetchDeputado(id) {
   }
 }
 
-export async function fetchDespesas(id, mes="") {
+export async function fetchDespesas(id) {
   try {
-    const response = await axios.get(URL+'/'+id+"/despesas"+mes
+    const response = await axios.post(URL+id+"/despesas"
     );
     return response.data;
   } catch (error) {
@@ -41,6 +37,6 @@ export async function fetchDespesas(id, mes="") {
 
 
 
-export default deputado
+export default dadosResumo
 
 
