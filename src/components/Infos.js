@@ -2,7 +2,7 @@ import "./Infos.css"
 
 
 function Infos({urlFoto, nomeCivil, siglaPartido, siglaUf, email, situacao, cpf, sexo, 
-    redeSocial, escolaridade, dataNascimento, telefone, despesas}){
+    redeSocial, escolaridade, dataNascimento, telefone, resumoIA}){
 
     return(
         
@@ -23,7 +23,7 @@ function Infos({urlFoto, nomeCivil, siglaPartido, siglaUf, email, situacao, cpf,
             </ul>
             <h3>Escolaridade: {escolaridade}</h3>
             <h3>Data de Nascimento: {dataNascimento}</h3>
-           
+            <h3>{resumoIA}</h3>
 
         </div>
     </div>

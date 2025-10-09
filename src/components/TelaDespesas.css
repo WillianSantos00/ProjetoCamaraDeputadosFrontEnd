@@ -1,0 +1,20 @@
+.paginasDespesas{
+
+    list-style: none;
+    display: flex;
+    justify-self: center;
+    
+}
+
+.itensPg{
+
+    margin-left: 15px;
+    cursor:pointer;
+
+}
+
+.itensPg:hover{
+
+    color: blue;
+
+}
