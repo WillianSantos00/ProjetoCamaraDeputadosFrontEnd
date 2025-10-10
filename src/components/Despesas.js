@@ -5,6 +5,7 @@ function Despesas({ano, mes, tipoDespesa, codDocumento, tipoDocumento, dataDocum
     valorDocumento, urlDocumento, nomeFornecedor, cnpjFornecedor, valorLiquido, 
     valorGlosa, numRessarcimento, parcela}){
 
+       
     return <>
     
     <div className="Despesas-container">
@@ -29,7 +30,6 @@ function Despesas({ano, mes, tipoDespesa, codDocumento, tipoDocumento, dataDocum
         
     
     </>
-   
 }
 
 export default Despesas;

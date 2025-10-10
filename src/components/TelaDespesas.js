@@ -2,27 +2,42 @@ import { useEffect, useState } from "react";
 import { fetchDespesas } from "../api/data";
 import { useSearchParams } from "react-router-dom";
 import Despesas from "./Despesas";
-import "./TelaDespesas.css"
+import "./TelaDespesas.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function TelaDespesas(){
 
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id")
+    
 
 const [despesa, setDespesa] = useState(null);
 const [ultimaPagina, setUltimaPagina] = useState(true);
-const [pagina, setPagina] = useState(1)
+const [pagina, setPagina] = useState(1);
+const [ano, setAno] = useState("");
+const [mes, setMes] = useState("");
+/*
+const [dateRange, setDateRange] = useState("");
+const [startDate, setStartDate] = useState(new Date());
+const [endDate, setEndDate] = useState(null);
+const [startDateFormatada, setStartDateFormatada] = useState("");
+const [endDateFormatada, setEndDateFormatada] = useState("");
+*/
 const [error, setError] = useState(null);
 const [loading, setLoading] = useState(true);
+
 
 
 useEffect(() => {
 
     const fetchDados = async() =>{
-        try{ 
-        const resultDespesas = await fetchDespesas(id, pagina);
+        try{
+        const resultDespesas = await fetchDespesas(id, pagina, ano, mes);
+        if(resultDespesas != null){
         setDespesa(resultDespesas.result[0]);
         setUltimaPagina(resultDespesas.result[1])
+        }
         }catch(err){
             setError(err);
         }finally{
@@ -33,7 +48,40 @@ useEffect(() => {
 
     fetchDados();
 
-}, [pagina])
+}, [pagina, mes, ano]);
+/*
+useEffect(()=>{
+    if(startDate && endDate){
+    setDateRange(`Selected date range: ${startDate.toDateString()} - ${endDate.toDateString()}`)
+  }else if(`Select start date: ${startDate.toDateString()}`){
+
+  }else{
+    setDateRange("");
+  }
+
+},[startDate, endDate])
+
+ useEffect(()=>{
+
+    const startDateString = startDate.toLocaleDateString('pt-br');
+    setStartDateFormatada(startDateString.replace(/\//g, '-'));
+
+
+  },[startDate])
+
+  useEffect(()=>{
+    if(endDate != null){
+    const endDateString = endDate.toLocaleDateString('pt-br');
+    setEndDateFormatada(endDateString.replace(/\//g, '-'));
+    
+    }else{
+        setEndDateFormatada("")
+    }
+    
+
+  },[endDate])
+
+  */
 
  if (loading){
         return <p>Por favor Aguarde</p> 
@@ -53,8 +101,63 @@ const listaPaginas = []
     setPagina(event.target.value);
   }
 
-    return <>
+  /*
+  const onChangeDate = (dates) =>{
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
 
+  }
+
+<DatePicker 
+            selected={startDate}
+            onChange={onChangeDate}
+            startDate={startDate}
+            endDate={endDate}
+            selectsRange
+            inline
+            />
+
+            */
+
+            var listaAnos = [];
+            const anoAtual = parseInt(new Date().getFullYear())
+            for(var i=anoAtual; i>=anoAtual-4; i--){
+                listaAnos.push(i)
+            }
+           
+            const handleAnoChange = (event) =>{
+        setAno(event.target.value);
+        }
+
+            const handleMesChange = (event) =>{
+        setMes(event.target.value);
+        }
+
+    return <>
+        <div className="SelecaoAnoMes">
+            
+            <select className="selectAno" onChange={handleAnoChange}>
+                <option value={""} >Selecione o ano</option>
+                {listaAnos.map((item)=> <option value={item}>{item}</option>)}
+            </select>
+            <select className="selectMes" onChange={handleMesChange}>
+                <option value={""}>Selecione o mês</option>
+                <option value={1}>Janeiro</option>
+                <option value={2}>Fevereiro</option>
+                <option value={3}>Março</option>
+                <option value={4}>Abril</option>
+                <option value={5}>Maio</option>
+                <option value={6}>Junho</option>
+                <option value={7}>Julho</option>
+                <option value={8}>Agosto</option>
+                <option value={9}>Setembro</option>
+                <option value={10}>Outubro</option>
+                <option value={11}>Novembro</option>
+                <option value={12}>Dezembro</option>
+            </select>
+
+        </div>
         <div>
         {despesa.map((item) => <Despesas ano={item.ano} mes={item.mes} 
         tipoDespesa={item.tipoDespesa} codDocumento={item.codDocumento} 
@@ -66,7 +169,7 @@ const listaPaginas = []
         </div>
         <div>
         <ul className="paginasDespesas">
-            {listaPaginas.map((item)=> <li value={item} className="itensPg" onClick={handleChangePagina} style={{color: item == pagina ? 'blue': '', fontWeight:item == pagina ? 'bold': '' }}>{item}</li>)}
+            {listaPaginas.map((item)=> <li value={item} className="itensPg" onClick={handleChangePagina} style={{color: item === pagina ? 'blue': '', fontWeight:item === pagina ? 'bold': '' }}>{item}</li>)}
         </ul>
         </div>
 

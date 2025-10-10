@@ -27,11 +27,13 @@ export async function fetchDeputado(id) {
   }
 }
 
-export async function fetchDespesas(id, pagina=1) {
+export async function fetchDespesas(id, pagina=1, ano, mes) {
   try {
     const response = await axios.post(Urldeputado+id+"/despesas"
     , {
-      pagina:pagina 
+      ano: ano,
+      mes: mes,
+      pagina:pagina      
     });
     return response.data;
   } catch (error) {
