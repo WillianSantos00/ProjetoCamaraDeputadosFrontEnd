@@ -2,6 +2,7 @@ import axios from "axios";
 
 const Urldeputado = "http://localhost:3000/api/v1/deputados/";
 const Urlgemini = "http://localhost:3000/api/v1/gemini/";
+const UrlUsuario = "http://localhost:3000/api/v1/usuario";
 
 
 
@@ -34,6 +35,33 @@ export async function fetchDespesas(id, pagina=1, ano, mes) {
       ano: ano,
       mes: mes,
       pagina:pagina      
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function fetchDiscursos(id, dtInicio, dtFim) {
+  try {
+    const response = await axios.post(Urldeputado+id+"/discursos"
+    , {
+         dtInicio: dtInicio,
+         dtFim: dtFim
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function fetchEventos(id, dtInicio, dtFim, pagina) {
+  try {
+    const response = await axios.post(Urldeputado+id+"/eventos"
+    , {
+         dtInicio: dtInicio,
+         dtFim: dtFim,
+         pagina: pagina
     });
     return response.data;
   } catch (error) {
@@ -89,6 +117,21 @@ export async function fetchResumoHistorico(id) {
   } catch (error) {
     console.error(error);
   }
+}
+
+export async function fetchCadastro(email, telefone) {
+
+  try{
+    const response = await axios.post(UrlUsuario
+    , {
+         email: email,
+         telefone: telefone
+    });
+    return response.status;
+  }catch(error){
+    console.error(error)
+  }
+  
 }
 
 

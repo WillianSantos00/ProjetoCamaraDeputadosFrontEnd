@@ -17,13 +17,6 @@ const [ultimaPagina, setUltimaPagina] = useState(true);
 const [pagina, setPagina] = useState(1);
 const [ano, setAno] = useState("");
 const [mes, setMes] = useState("");
-/*
-const [dateRange, setDateRange] = useState("");
-const [startDate, setStartDate] = useState(new Date());
-const [endDate, setEndDate] = useState(null);
-const [startDateFormatada, setStartDateFormatada] = useState("");
-const [endDateFormatada, setEndDateFormatada] = useState("");
-*/
 const [error, setError] = useState(null);
 const [loading, setLoading] = useState(true);
 
@@ -49,39 +42,7 @@ useEffect(() => {
     fetchDados();
 
 }, [pagina, mes, ano]);
-/*
-useEffect(()=>{
-    if(startDate && endDate){
-    setDateRange(`Selected date range: ${startDate.toDateString()} - ${endDate.toDateString()}`)
-  }else if(`Select start date: ${startDate.toDateString()}`){
 
-  }else{
-    setDateRange("");
-  }
-
-},[startDate, endDate])
-
- useEffect(()=>{
-
-    const startDateString = startDate.toLocaleDateString('pt-br');
-    setStartDateFormatada(startDateString.replace(/\//g, '-'));
-
-
-  },[startDate])
-
-  useEffect(()=>{
-    if(endDate != null){
-    const endDateString = endDate.toLocaleDateString('pt-br');
-    setEndDateFormatada(endDateString.replace(/\//g, '-'));
-    
-    }else{
-        setEndDateFormatada("")
-    }
-    
-
-  },[endDate])
-
-  */
 
  if (loading){
         return <p>Por favor Aguarde</p> 
@@ -101,25 +62,7 @@ const listaPaginas = []
     setPagina(event.target.value);
   }
 
-  /*
-  const onChangeDate = (dates) =>{
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-
-  }
-
-<DatePicker 
-            selected={startDate}
-            onChange={onChangeDate}
-            startDate={startDate}
-            endDate={endDate}
-            selectsRange
-            inline
-            />
-
-            */
-
+ 
             var listaAnos = [];
             const anoAtual = parseInt(new Date().getFullYear())
             for(var i=anoAtual; i>=anoAtual-4; i--){

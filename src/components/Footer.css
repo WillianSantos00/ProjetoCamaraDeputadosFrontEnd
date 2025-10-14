@@ -1,0 +1,15 @@
+.Footer-container{
+
+    background-color: rgb(109, 109, 255);
+    color: white;
+    display:flex;
+    margin-bottom: 0;
+
+}
+
+.Footer-info{
+
+    width: 50%;
+   
+
+}
