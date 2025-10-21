@@ -1,0 +1,182 @@
+/* Container principal do cabeçalho */
+.deputado-header-container {
+  background-color: #ffffff;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.deputado-main-content {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  position: relative;
+}
+
+/* --- Coluna da Fotografia --- */
+.deputado-foto {
+  background-color: #0d2a58; /* Azul escuro */
+  border-radius: 16px;
+  padding: 10px;
+  border: 1px solid #3b82f6; /* Azul claro */
+  flex-shrink: 0;
+}
+
+.deputado-foto-inner {
+  width: 166px;
+  height: 166px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Garante que a imagem não ultrapasse as bordas */
+  border-radius: 8px; /* Arredonda os cantos da imagem interna */
+}
+
+/* Estilo para a imagem do deputado */
+.deputado-foto-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+}
+
+/* --- Coluna de Informações --- */
+.deputado-info {
+  flex-grow: 1;
+}
+
+.deputado-info .status {
+  background-color: #e0f2fe;
+  color: #0ea5e9;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.deputado-info h1 {
+  font-size: 2.5rem;
+  color: #1e293b;
+  margin: 10px 0 5px 0;
+}
+
+.deputado-info .partido {
+  font-size: 1.2rem;
+  color: #64748b;
+  margin: 0 0 20px 0;
+}
+
+/* Grelha de contactos */
+.deputado-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 20px;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.deputado-contact-grid span,
+.deputado-contact-grid a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- Coluna de Redes Sociais --- */
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.social-links a {
+  background-color: #e0f2fe;
+  color: #0ea5e9;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: background-color 0.3s;
+}
+
+.social-links a:hover {
+  background-color: #b9e5fc;
+}
+
+/* --- Secção "Pergunte ao PolitIA" --- */
+.pergunte-ia {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 30px;
+}
+
+.pergunte-ia-title {
+  color: #3b82f6;
+  font-weight: bold;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.pergunte-ia-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.pergunte-ia button {
+  background-color: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 22px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+.pergunte-ia button:hover {
+  background-color: #334155;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 900px) {
+  .deputado-main-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .social-links {
+    position: static;
+    flex-direction: row;
+    margin-top: 20px;
+  }
+  .pergunte-ia {
+    flex-direction: column;
+    align-items: center;
+  }
+  .pergunte-ia-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  .pergunte-ia button {
+    width: 100%;
+  }
+  .deputado-contact-grid {
+    grid-template-columns: 1fr;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 300px;
+  }
+}
+

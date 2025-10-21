@@ -1,0 +1,81 @@
+/* Estilos para a aba de Informações do Deputado */
+.infos-container {
+  display: flex;
+  gap: 30px; /* Espaço entre a foto e os detalhes */
+  font-family: Arial, sans-serif;
+  color: #333;
+  padding: 10px;
+}
+
+/* Coluna da foto */
+.infos-perfil {
+  flex-shrink: 0; /* Impede que a foto encolha */
+}
+
+.infos-foto {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Coluna dos detalhes */
+.infos-detalhes {
+  flex-grow: 1; /* Ocupa o espaço restante */
+}
+
+.infos-detalhes h3 {
+  font-size: 1.8rem;
+  color: #0d2a58; /* Azul escuro, para combinar com o cabeçalho */
+  margin-top: 0;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.infos-detalhes ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.infos-detalhes li {
+  font-size: 1rem;
+  line-height: 1.8;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0; /* Linha separadora suave */
+  display: flex;
+}
+
+.infos-detalhes li:last-child {
+  border-bottom: none; /* Remove a linha do último item */
+}
+
+.infos-detalhes strong {
+  font-weight: 600;
+  color: #555;
+  width: 180px; /* Largura fixa para alinhar os valores */
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .infos-container {
+    flex-direction: column; /* Empilha a foto sobre os detalhes */
+    align-items: center;
+    text-align: center;
+  }
+
+  .infos-detalhes li {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .infos-detalhes strong {
+    width: auto;
+    margin-bottom: 5px;
+  }
+}
+

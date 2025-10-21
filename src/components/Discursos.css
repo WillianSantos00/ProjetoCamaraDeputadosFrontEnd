@@ -1,0 +1,11 @@
+.info-discursos{
+
+
+    width: 50%;
+    height: 300px;
+    justify-self: center;
+    border: 1px solid;
+    margin-bottom: 10px;
+    overflow: scroll;
+
+}

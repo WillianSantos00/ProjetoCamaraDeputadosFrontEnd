@@ -1,0 +1,27 @@
+/* Container geral da página do deputado */
+.deputado-page-container {
+  background-color: #f0f4f8; /* Fundo cinza claro da página */
+  padding-bottom: 50px;
+  /* Adicionado para criar espaço para a NavBar fixa */
+  padding-top: 100px; 
+}
+
+/* Wrapper para o conteúdo abaixo do cabeçalho (Despesas) */
+.deputado-content-wrapper {
+  max-width: 1200px;
+  margin: 40px auto 0 auto; /* Espaçamento entre o cabeçalho e as despesas */
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+}
+
+/* Estilo para a mensagem de carregamento */
+.loading-spinner {
+  text-align: center;
+  padding: 80px;
+  font-size: 1.2rem;
+  color: #555;
+}
+

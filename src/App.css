@@ -1,0 +1,24 @@
+.gridDeputados{
+
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+
+
+}
+
+.grid-pesquisa{
+
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+}
+
+.nome-deputado{
+
+    width: 350px;
+    height: 30px;
+    text-align: center;
+
+}
