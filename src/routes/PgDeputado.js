@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./PgDeputado.css";
 
@@ -6,24 +6,49 @@ import "./PgDeputado.css";
 import { fetchDeputado, fetchResumoDespesas, fetchResumoDiscursos, fetchResumoEventos } from "../api/data";
 
 // --- Componentes ---
-import NavBar from "../components/NavBar"; // Importa a NavBar
+import NavBar from "../components/NavBar";
 import HeaderDeputado from "../components/HeaderDeputado";
-import TelaDespesas from "../components/TelaDespesas";
-import ModalIA from "../components/ModalIA";
-import Footer from "../components/Footer"; // Importa o Footer
+import AIButton from "../components/AIButton";
+import Footer from "../components/Footer";
 
-function LoadingSpinner() {
-  return <div className="loading-spinner">A carregar...</div>;
+// Carregamento lazy para os componentes das abas
+const TelaDespesas = lazy(() => import('../components/TelaDespesas'));
+const TelaDiscursos = lazy(() => import('../components/TelaDiscursos'));
+const TelaEventos = lazy(() => import('../components/TelaEventos'));
+
+// --- COMPONENTES DE CARREGAMENTO ---
+
+// 1. Este é o spinner para o CARREGAMENTO DA PÁGINA INTEIRA
+function PageLoadingSpinner() {
+  return (
+    <div className="page-loading-overlay">
+      <div className="loading-spinner-animation"></div>
+      <p className="loading-text">Aguarde enquanto carregamos as informações...</p>
+    </div>
+  );
 }
+
+// 2. Este é o spinner para o CARREGAMENTO INTERNO DAS ABAS
+// (Não será usado se o fallback for null, mas mantemos para referência futura)
+function TabLoadingSpinner() {
+  return (
+    <div className="tab-loading-overlay">
+      <div className="loading-spinner-animation"></div>
+      <p className="loading-text">Aguarde enquanto carregamos as informações...</p>
+    </div>
+  );
+}
+// --- FIM DOS COMPONENTES DE CARREGAMENTO ---
+
 
 function PgDeputado() {
   // --- Estados ---
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const [deputado, setDeputado] = useState(null);
+  const [activeTab, setActiveTab] = useState("despesas");
   const [resumosIA, setResumosIA] = useState({});
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: "", text: "" });
+  const [aiResponse, setAiResponse] = useState({ title: "", text: "", visible: false });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -45,7 +70,7 @@ function PgDeputado() {
           eventos: resumoEvt.resumo
         });
 
-      } catch (err) {
+      } catch (err) { // <-- CORREÇÃO: Bloco catch formatado corretamente
         setError(err);
         console.error("Erro ao carregar dados da página:", err);
       } finally {
@@ -71,35 +96,49 @@ function PgDeputado() {
       title = "Resumo dos Próximos Eventos";
       text = resumosIA.eventos;
     }
-    setModalContent({ title, text });
-    setModalVisible(true);
+    setAiResponse({ title, text, visible: true });
   };
 
-  if (loading) return <LoadingSpinner />;
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "discursos":
+        return <TelaDiscursos />;
+      case "eventos":
+        return <TelaEventos />;
+      case "despesas":
+      default:
+        return <TelaDespesas />;
+    }
+  };
+
+  // 3. USA O SPINNER DE PÁGINA INTEIRA AQUI
+  if (loading) return <PageLoadingSpinner />; 
   if (error) return <p>Ocorreu um erro ao carregar os dados: {error.message}</p>;
 
   return (
-    // Usa um Fragmento para agrupar os componentes
     <>
       <NavBar />
       
       <div className="deputado-page-container">
-        {/* Bloco 1: Informações do Deputado */}
         <HeaderDeputado deputado={deputado} onIaButtonClick={handleIaButtonClick} />
 
-        {/* Bloco 2: Conteúdo de Despesas */}
-        <div className="deputado-content-wrapper">
-          <TelaDespesas />
+        <div className="tabs-container">
+          <ul className="tabs-nav">
+            <li className={activeTab === 'despesas' ? 'active' : ''} onClick={() => setActiveTab('despesas')}>Despesas</li>
+            <li className={activeTab === 'discursos' ? 'active' : ''} onClick={() => setActiveTab('discursos')}>Discursos</li>
+            <li className={activeTab === 'eventos' ? 'active' : ''} onClick={() => setActiveTab('eventos')}>Eventos</li>
+          </ul>
+          
+          <div className="tab-content">
+            {/* O fallback foi mudado para 'null' para não mostrar loading nas abas */}
+            <Suspense fallback={null}>
+              {renderTabContent()}
+            </Suspense>
+          </div>
         </div>
-
-        {/* Modal da IA (não visível até ser ativado) */}
-        <ModalIA 
-          visible={modalVisible} 
-          title={modalContent.title}
-          text={modalContent.text}
-          onClose={() => setModalVisible(false)} 
-        />
       </div>
+
+      <AIButton response={aiResponse} setResponse={setAiResponse} />
 
       <Footer />
     </>
@@ -107,4 +146,3 @@ function PgDeputado() {
 }
 
 export default PgDeputado;
-

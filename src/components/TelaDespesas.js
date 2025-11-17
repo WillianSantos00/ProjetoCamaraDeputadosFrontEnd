@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
-import { fetchDespesas } from "../api/data";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Despesas from "./Despesas";
+import { fetchDespesas } from "../api/data"; // Supondo que esta função exista
 import "./TelaDespesas.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 function TelaDespesas() {
     // Hooks para gerenciar o estado da página
@@ -60,7 +57,45 @@ function TelaDespesas() {
         setPagina(1); // Reseta para a primeira página
     };
     
-    // Mostra mensagens de carregamento ou erro
+    // --- LÓGICA DE PAGINAÇÃO (LIMITE 6) ---
+    const getPageNumbers = () => {
+      const MAX_PAGES = 6;
+      const total = ultimaPagina;
+      const current = pagina;
+      
+      if (total <= MAX_PAGES) {
+          // Se o total for 6 ou menos, mostra todos
+          return [...Array(total).keys()].map(n => n + 1);
+      }
+
+      // Lógica de janela deslizante
+      let start = Math.max(1, current - 2);
+      let end = Math.min(total, current + 3);
+
+      if (current < 4) {
+          // Perto do início
+          start = 1;
+          end = MAX_PAGES;
+      } else if (current > total - 3) {
+          // Perto do fim
+          start = total - MAX_PAGES + 1;
+          end = total;
+      } else {
+          // No meio (ex: 3, 4, [5], 6, 7, 8)
+          start = current - 2;
+          end = current + 3;
+      }
+      
+      const pages = [];
+      for (let i = start; i <= end; i++) {
+          pages.push(i);
+      }
+      return pages;
+    };
+
+    const pageNumbersToDisplay = getPageNumbers();
+    // --- FIM DA LÓGICA DE PAGINAÇÃO ---
+
     if (loading) return <p>Carregando despesas, por favor aguarde...</p>;
     if (error) return <p>Ocorreu um erro ao carregar as despesas: {error.message}</p>;
 
@@ -103,7 +138,7 @@ function TelaDespesas() {
                                 <p><strong>Tipo de Documento:</strong> {despesa.tipoDocumento}</p>
                                 <p><strong>Valor:</strong> R$ {parseFloat(despesa.valorDocumento).toFixed(2)}</p>
                                 <p><strong>Tipo de Despesa:</strong> {despesa.tipoDespesa}</p>
-                                <p><strong>CNPJ do Fornecedor:</strong> {despesa.cnpjCpfFornecedor}</p>
+                                <p><strong>CNPJ:</strong> {despesa.cnpjCpfFornecedor}</p>
                                 <p><strong>Parcela:</strong> {despesa.parcela}</p>
                             </div>
                             <a href={despesa.urlDocumento} target="_blank" rel="noopener noreferrer">Ver documento →</a>
@@ -118,9 +153,9 @@ function TelaDespesas() {
             {ultimaPagina > 1 && (
                 <div className="pagination">
                     <button onClick={() => setPagina(p => Math.max(p - 1, 1))} disabled={pagina === 1}>&lt;</button>
-                    {[...Array(ultimaPagina).keys()].map(num => (
-                        <button key={num + 1} onClick={() => setPagina(num + 1)} className={pagina === num + 1 ? 'active' : ''}>
-                            {num + 1}
+                    {pageNumbersToDisplay.map(num => (
+                        <button key={num} onClick={() => setPagina(num)} className={pagina === num ? 'active' : ''}>
+                            {num}
                         </button>
                     ))}
                     <button onClick={() => setPagina(p => Math.min(p + 1, ultimaPagina))} disabled={pagina === ultimaPagina}>&gt;</button>
@@ -131,4 +166,3 @@ function TelaDespesas() {
 }
 
 export default TelaDespesas;
-

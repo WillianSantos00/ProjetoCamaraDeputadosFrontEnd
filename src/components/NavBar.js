@@ -22,8 +22,6 @@ function NavBar() {
                 <Link to="/PaginaInstitucional">Início</Link>
                 <Link to="/home">Busca</Link>
                 {/* Alterado para levar à página institucional */}
-                <Link to="/">Notícias</Link>
-                {/* Alterado para levar à página institucional */}
                 <Link to="/">Sobre o projeto</Link>
         
                 <button

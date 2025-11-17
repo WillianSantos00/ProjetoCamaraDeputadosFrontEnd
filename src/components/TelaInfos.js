@@ -1,60 +1,34 @@
 import React from 'react';
-import './TelaInfos.css'; // Importa o CSS atualizado
+import './TelaInfos.css'; // Certifique-se de que este CSS existe e está estilizado
 
 function TelaInfos({ deputado }) {
-  // Se os dados do deputado ainda não chegaram, mostra uma mensagem.
+  // Adicionado para depuração: Verifique a consola do seu navegador (F12)
+  console.log("Dados recebidos em TelaInfos:", deputado);
+
   if (!deputado) {
-    return <p>A carregar informações...</p>;
+    return <p>Informações não disponíveis.</p>;
   }
 
-  // Extrai os dados para facilitar a leitura no JSX
-  const {
-    urlFoto,
-    nomeCivil,
-    siglaPartido,
-    siglaUf,
-    email,
-    situacao,
-    cpf,
-    sexo,
-    redeSocial,
-    escolaridade,
-    dataNascimento,
-    telefone
-  } = {
-    urlFoto: deputado.ultimoStatus.urlFoto,
-    nomeCivil: deputado.nomeCivil,
-    siglaPartido: deputado.ultimoStatus.siglaPartido,
-    siglaUf: deputado.ultimoStatus.siglaUf,
-    email: deputado.ultimoStatus.gabinete.email,
-    situacao: deputado.ultimoStatus.situacao,
-    cpf: deputado.cpf,
-    sexo: deputado.sexo,
-    redeSocial: deputado.redeSocial,
-    escolaridade: deputado.escolaridade,
-    dataNascimento: deputado.dataNascimento,
-    telefone: deputado.ultimoStatus.gabinete.telefone
-  };
+  // Acesso seguro aos dados
+  const { nomeCivil, dataNascimento, escolaridade, sexo, ultimoStatus } = deputado;
 
   return (
     <div className="infos-container">
-      <div className="infos-perfil">
-        <img src={urlFoto} alt={`Foto de ${nomeCivil}`} className="infos-foto" />
+      <div className="infos-foto">
+        <img src={ultimoStatus?.urlFoto} alt={`Fotografia de ${nomeCivil}`} />
       </div>
       <div className="infos-detalhes">
         <h3>Detalhes do Parlamentar</h3>
         <ul>
           <li><strong>Nome Civil:</strong> {nomeCivil}</li>
-          <li><strong>Partido:</strong> {siglaPartido}</li>
-          <li><strong>Estado:</strong> {siglaUf}</li>
-          <li><strong>Situação:</strong> {situacao}</li>
-          <li><strong>Data de Nascimento:</strong> {dataNascimento}</li>
+          <li><strong>Partido:</strong> {ultimoStatus?.siglaPartido}</li>
+          <li><strong>Estado:</strong> {ultimoStatus?.siglaUf}</li>
+          <li><strong>Email:</strong> {ultimoStatus?.gabinete.email}</li>
+          <li><strong>Telefone:</strong> {ultimoStatus?.gabinete.telefone}</li>
+          <li><strong>Situação:</strong> {ultimoStatus?.situacao}</li>
           <li><strong>Sexo:</strong> {sexo === 'M' ? 'Masculino' : 'Feminino'}</li>
+          <li><strong>Data de Nascimento:</strong> {dataNascimento}</li>
           <li><strong>Escolaridade:</strong> {escolaridade}</li>
-          <li><strong>E-mail:</strong> {email}</li>
-          <li><strong>Telefone:</strong> {telefone}</li>
-          <li><strong>CPF:</strong> {cpf}</li>
-          <li><strong>Redes Sociais:</strong> {redeSocial && redeSocial.length > 0 ? redeSocial[0] : 'N/A'}</li>
         </ul>
       </div>
     </div>
@@ -62,4 +36,3 @@ function TelaInfos({ deputado }) {
 }
 
 export default TelaInfos;
-

@@ -1,18 +1,17 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PaginaInstitucional.css';
 
 // Componentes da página
-
 import SobreNos from '../components/SobreNos';
-
-
+import Faq from '../components/Faq'; // Importa o componente de FAQ
 
 function PaginaInstitucional() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   const handleSearch = () => {
+    // Redireciona para a página /home com o termo de pesquisa como parâmetro 'q'
     if (searchTerm.trim()) {
       navigate(`/home?q=${encodeURIComponent(searchTerm.trim())}`);
     }
@@ -21,7 +20,6 @@ function PaginaInstitucional() {
   return (
     <div className="institucional-page">
     
-
       {/* Secção 1: Banner com Pesquisa */}
       <section className="hero-section">
         <div className="hero-content">
@@ -31,7 +29,8 @@ function PaginaInstitucional() {
             <input
               type="text"
               className="hero-search-bar"
-              placeholder="Digite aqui o nome de um candidato, partido, cargo, cidade..."
+              // O placeholder foi atualizado
+              placeholder="Digite aqui o nome de um candidato..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -61,6 +60,7 @@ function PaginaInstitucional() {
         <SobreNos />
 
         {/* Secção 4: Perguntas Frequentes */}
+        <Faq />
      
       </main>
 
@@ -69,4 +69,3 @@ function PaginaInstitucional() {
 }
 
 export default PaginaInstitucional;
-

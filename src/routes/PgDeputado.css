@@ -2,26 +2,129 @@
 .deputado-page-container {
   background-color: #f0f4f8; /* Fundo cinza claro da página */
   padding-bottom: 50px;
-  /* Adicionado para criar espaço para a NavBar fixa */
-  padding-top: 100px; 
+  padding-top: 80px; /* Espaço para a NavBar fixa */
 }
 
-/* Wrapper para o conteúdo abaixo do cabeçalho (Despesas) */
-.deputado-content-wrapper {
+/* Container branco que agrupa as abas e o conteúdo */
+.tabs-container {
   max-width: 1200px;
-  margin: 40px auto 0 auto; /* Espaçamento entre o cabeçalho e as despesas */
+  margin: 24px auto 0 auto; /* Move para cima para sobrepor o header */
+  position: relative;
+  z-index: 10;
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  padding: 30px;
 }
 
-/* Estilo para a mensagem de carregamento */
-.loading-spinner {
+/* Barra de navegação das abas */
+.tabs-nav {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tabs-nav li {
+  flex: 1;
   text-align: center;
-  padding: 80px;
-  font-size: 1.2rem;
-  color: #555;
+  padding: 20px 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
 }
 
+.tabs-nav li:hover {
+  color: #007bff;
+}
+
+/* Estilo da aba ativa (linha azul em baixo) */
+.tabs-nav li.active {
+  color: #007bff;
+}
+
+.tabs-nav li.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #007bff;
+}
+
+/* Área de conteúdo da aba */
+.tab-content {
+  padding: 30px;
+  min-height: 400px; /* Garante uma altura mínima */
+}
+
+
+/* --- NOVO: Estilos da Animação de Carregamento --- */
+
+/* Este overlay centraliza a animação dentro da área de conteúdo */
+.loading-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Garante que ocupa o espaço da aba, mesmo que esteja vazia */
+  min-height: 400px; 
+  padding: 50px;
+  text-align: center;
+}
+
+/* O círculo giratório */
+.loading-spinner-animation {
+  border: 6px solid #f3f3f3; /* Cor de fundo do círculo */
+  border-top: 6px solid #007bff; /* Cor da animação (Azul) */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite; /* A animação */
+}
+
+/* O texto de carregamento */
+.loading-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #555;
+  margin-top: 20px;
+}
+
+/* A animação que faz o círculo girar */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Estilo para os filtros de data (Calendário) */
+.filtros-data {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.filtros-data input {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* --- NOVO: Estilo para os dias destacados no calendário --- */
+.react-datepicker__day--highlighted {
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+}
+.react-datepicker__day--highlighted:hover {
+  background-color: #0056b3;
+}
