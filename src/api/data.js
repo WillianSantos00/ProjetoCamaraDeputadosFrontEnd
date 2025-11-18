@@ -6,7 +6,6 @@ const UrlUsuario = "http://localhost:3000/api/v1/usuario";
 
 
 
-<<<<<<< HEAD
 export async function fetchDadosResumo() {
   try {
     const response = await axios.get(Urldeputado);
@@ -17,18 +16,6 @@ export async function fetchDadosResumo() {
     return { deputados: [] }; 
   }
 }
-=======
-const dados = axios.get(Urldeputado)
-  .then(function (response) {
-    return response.data
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-
- 
-const dadosResumo = await dados;
->>>>>>> origin/front1versao
 
 
 export async function fetchDeputado(id) {
@@ -148,9 +135,3 @@ export async function fetchCadastro(email, telefone) {
 }
 
 
-<<<<<<< HEAD
-=======
-export default dadosResumo
-
-
->>>>>>> origin/front1versao

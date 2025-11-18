@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-.Footer-container{
-
-    background-color: rgb(109, 109, 255);
-    color: white;
-    display:flex;
-    margin-bottom: 0;
-
-}
-
-.Footer-info{
-
-    width: 50%;
-   
-
-}
-=======
 /* Container principal do rodapé */
 .site-footer {
   background-color: #0d2a58; /* Azul escuro do fundo */
@@ -97,4 +80,3 @@
     margin-right: auto;
   }
 }
->>>>>>> origin/front1versao
