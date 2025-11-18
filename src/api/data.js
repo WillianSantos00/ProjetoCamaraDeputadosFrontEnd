@@ -6,16 +6,16 @@ const UrlUsuario = "http://localhost:3000/api/v1/usuario";
 
 
 
-const dados = axios.get(Urldeputado)
-  .then(function (response) {
-    return response.data
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-
- 
-const dadosResumo = await dados;
+export async function fetchDadosResumo() {
+  try {
+    const response = await axios.get(Urldeputado);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar dados resumo:", error);
+    
+    return { deputados: [] }; 
+  }
+}
 
 
 export async function fetchDeputado(id) {
@@ -133,8 +133,5 @@ export async function fetchCadastro(email, telefone) {
   }
   
 }
-
-
-export default dadosResumo
 
 
