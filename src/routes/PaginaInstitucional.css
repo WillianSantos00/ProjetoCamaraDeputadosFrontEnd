@@ -1,0 +1,126 @@
+.institucional-page {
+  background-color: #f8f9fa;
+}
+
+/* --- Secção Hero com Banner --- */
+.hero-section {
+  background-image: linear-gradient(rgba(13, 42, 88, 0.8), rgba(13, 42, 88, 0.8)), url(../../public/fundobanner.png);
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.hero-content strong {
+  color: #8bb9e0;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+/* --- ESTILOS DA BARRA DE BUSCA ATUALIZADOS --- */
+.hero-search-bar-wrapper {
+  display: flex;
+  max-width: 700px;
+  margin: 0 auto;
+  /* Remove a sombra externa antiga */
+}
+
+.hero-search-bar {
+ color: #002053;
+  flex-grow: 1;
+  border: none;
+  border-radius: 50px;
+  padding: 18px 30px;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-right: 16px; /* Faz o botão sobrepor um pouco o input */
+  box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+  font-family: quicksand, sans-serif;
+}
+
+.hero-search-bar::placeholder {
+  color: #999;
+}
+
+.hero-search-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(to right, #3b9eff, #1a7dce); /* Gradiente azul do botão */
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0 35px 0 50px; /* Padding ajustado para o ícone */
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  box-shadow: 0 4px 15px rgba(27, 125, 206, 0.4);
+  font-family: quicksand, sans-serif;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.hero-search-button:hover {
+ opacity: 0.9;
+}
+
+.hero-search-icon {
+  width: 24px;
+}
+
+/* --- Conteúdo Principal da Página --- */
+.page-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.info-cards-section {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.info-cards-section h2 {
+  font-size: 2rem;
+  color: #1e293b;
+}
+
+.info-cards-section p {
+  color: #64748b;
+  margin-bottom: 40px;
+}
+
+.info-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.info-card {
+  background-color: white;
+  padding: 30px 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-weight: 600;
+  color: #334155;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}

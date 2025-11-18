@@ -7,10 +7,17 @@
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+<<<<<<< HEAD
     "axios": "^1.11.0",
     "react": "^19.1.1",
     "react-datepicker": "^8.7.0",
     "react-dom": "^19.1.1",
+=======
+    "axios": "^1.12.2",
+    "react": "^19.2.0",
+    "react-datepicker": "^8.7.0",
+    "react-dom": "^19.2.0",
+>>>>>>> origin/front1versao
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.8.1",
     "react-scripts": "5.0.1",

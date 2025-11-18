@@ -1,0 +1,80 @@
+/* Container principal do bloco de CTA (Call to Action) */
+.cta-section {
+  display: flex;
+  align-items: center;
+  background-color: #3b82f6;
+  color: white;
+  padding: 40px 0; /* Padding vertical, o horizontal será no wrapper */
+  margin-top: 60px;
+  font-family: 'Quicksand', sans-serif;
+  
+  /* Adicionado para criar o efeito de cobertura total */
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+}
+
+/* Wrapper interno para centralizar o conteúdo */
+.cta-content-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px; /* Mesma largura do .page-container */
+  margin: 0 auto;
+  padding: 0 20px; /* Espaçamento lateral */
+}
+
+/* Container da imagem à esquerda */
+.cta-image-container {
+  flex-shrink: 0;
+}
+
+.cta-image {
+  max-width: 300px;
+  height: auto;
+  display: block;
+}
+
+/* Container do texto à direita */
+.cta-text-container {
+  flex-grow: 1;
+}
+
+.cta-text-container h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.cta-text-container p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .cta-content-wrapper {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cta-image {
+    max-width: 250px;
+    margin-bottom: 20px;
+  }
+
+  .cta-text-container h2 {
+    font-size: 2rem;
+  }
+
+  .cta-text-container p {
+    font-size: 1.1rem;
+  }
+}
+

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .Footer-container{
 
     background-color: rgb(109, 109, 255);
@@ -13,3 +14,87 @@
    
 
 }
+=======
+/* Container principal do rodapé */
+.site-footer {
+  background-color: #0d2a58; /* Azul escuro do fundo */
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+/* Seção da Newsletter (apenas para espaçamento) */
+.footer-newsletter-section {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Conteúdo principal do rodapé (logo e links) */
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr; /* Coluna da esquerda maior que as outras */
+  gap: 40px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Estilos comuns para as colunas */
+.footer-column {
+  padding: 0 15px;
+}
+
+/* Coluna "Sobre" */
+.footer-about .footer-logo {
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+.footer-about-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #c0d1e6; /* Um branco um pouco mais suave */
+}
+
+/* Colunas de Links */
+.footer-links h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #8bb9e0; /* Azul claro para os títulos */
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #8bb9e0; /* Muda para o azul claro no hover */
+}
+
+/* --- Responsividade para telas menores --- */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr; /* Empilha as colunas */
+    text-align: center; /* Centraliza o texto */
+    gap: 30px;
+    padding: 30px 20px;
+  }
+  
+  .footer-about .footer-logo {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+>>>>>>> origin/front1versao

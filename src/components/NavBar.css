@@ -1,0 +1,104 @@
+/* Define as cores principais para facilitar a manutenção */
+:root {
+	--nav-background: #fff;
+	--nav-link-color: #8bb9e0;
+	--nav-link-hover: #ffffff;
+	--text-white: #ffffff;
+}
+
+/* Remove margens e paddings padrão */
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+/* Estilo principal do cabeçalho */
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between; /* Empurra o logo para a esquerda e a navegação para a direita */
+	height: 80px;
+	padding: 0 2rem;
+	background-color: var(--nav-background);
+    border-bottom: 2px solid;
+    border-color: 002053;
+}
+
+/* Estilo da imagem do logo */
+.logo {
+    height: 45px; /* Ajuste a altura conforme necessário */
+    width: auto;
+}
+
+/* Estilo dos links de navegação para Desktop */
+header nav a {
+	margin: 0 1.5rem; /* Espaçamento entre os links */
+	color: var(--nav-link-color);
+	text-decoration: none;
+	font-size: 1.1rem;
+	font-weight: 500;
+	font-family: Arial, sans-serif;
+	transition: color 0.3s ease;
+}
+
+header nav a:hover {
+	color: var(--nav-link-hover);
+}
+
+/* Botões do menu responsivo (hambúrguer e fechar) */
+header .nav-btn {
+	padding: 5px;
+	cursor: pointer;
+	background: transparent;
+	border: none;
+	outline: none;
+	color: var(--text-white);
+	visibility: hidden; /* Escondido em telas grandes */
+	opacity: 0;
+	font-size: 1.8rem;
+}
+
+/* Media Query: Estilos para telas menores (mobile/tablet) */
+@media only screen and (max-width: 1024px) {
+	/* Mostra o botão de menu (hambúrguer) */
+	header .nav-btn {
+		visibility: visible;
+		opacity: 1;
+	}
+
+    /* Esconde a navegação desktop e prepara para o modo responsivo */
+	header nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 1.5rem;
+		background-color: var(--nav-background);
+		transition: transform 0.5s ease-in-out;
+		transform: translateY(-100vh); /* Começa fora da tela */
+		z-index: 100;
+	}
+
+    /* Quando a classe 'responsive_nav' é aplicada, o menu desliza para a tela */
+	header .responsive_nav {
+		transform: none;
+	}
+
+    /* Posiciona o botão de fechar dentro do menu responsivo */
+	nav .nav-close-btn {
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+	}
+
+    /* Aumenta o tamanho da fonte dos links no menu responsivo */
+	nav a {
+		font-size: 1.5rem;
+	}
+}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *{
 
     margin: 0px;
@@ -38,4 +39,104 @@
     font-size: 28px;
     margin-bottom: 8px;
 
+=======
+/* Remove o sublinhado do link que envolve o card */
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex; /* Garante que o link preencha o espaço do grid */
+}
+
+/* Estilos para o container principal do card */
+.cardDeputado {
+  border: 1px solid #007BFF;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%;
+  height: 100%;
+}
+
+.cardDeputado:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Cabeçalho do card com número e partido */
+.card-topo {
+  display: flex;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.card-numero, .card-partido {
+  flex: 1;
+  padding: 8px 0;
+}
+
+.card-numero {
+  background-color: #0A1E4F; /* Azul escuro */
+}
+
+.card-partido {
+  background-color: #007BFF; /* Azul primário */
+}
+
+/* Conteúdo central (foto, nome, estado) */
+.card-content {
+  flex-grow: 1; /* Permite que esta área cresça e empurre o botão para baixo */
+}
+
+.fotoDeputado {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 10px auto;
+  border: 3px solid #f0f2f5;
+}
+
+.nomeDeputado {
+  color: #0A1E4F;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.estadoDeputado {
+  color: #002053;
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+/* Botão de visualização */
+.btnVisualizar {
+  background-color: #007BFF;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 80%;
+  margin: 15px auto 0;
+}
+
+.btnVisualizar:hover {
+  background-color: #0056b3;
+>>>>>>> origin/front1versao
 }

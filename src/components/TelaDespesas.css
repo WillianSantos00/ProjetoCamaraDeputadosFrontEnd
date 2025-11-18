@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .paginasDespesas{
 
     list-style: none;
@@ -23,3 +24,93 @@
     display:block;
     margin: 0 auto;
 }
+=======
+.despesas-container {
+  font-family: Arial, sans-serif;
+}
+
+.despesas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.despesas-header h2 {
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.filtros {
+  display: flex;
+  gap: 15px;
+}
+
+.filtros select {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.despesas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.despesa-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.despesa-card .data {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.despesa-card h4 {
+  font-size: 1.1rem;
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.despesa-card .detalhes p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.despesa-card a {
+  display: inline-block;
+  margin-top: 15px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 8px;
+}
+
+.pagination button {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+>>>>>>> origin/front1versao
