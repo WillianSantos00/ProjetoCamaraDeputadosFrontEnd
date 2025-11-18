@@ -23,7 +23,7 @@ function Home() {
   // --- LÓGICA DE FILTRAGEM CORRIGIDA ---
   const deputadosFiltrados = useMemo(() => {
     // 2. CORREÇÃO: Aceder ao array .deputados dentro do objeto importado
-    const dados = dadosResumo.deputados; 
+    const dados = dadosResumo.deputados;
     if (!dados || !Array.isArray(dados)) return [];
     
     return dados.filter(dado => {
