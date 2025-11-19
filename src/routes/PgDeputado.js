@@ -1,23 +1,29 @@
 import React, { useState, useEffect, Suspense, lazy } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom"; 
 import "./PgDeputado.css";
 
 // --- API ---
-import { fetchDeputado, fetchResumoDespesas, fetchResumoDiscursos, fetchResumoEventos } from "../api/data";
+import { 
+  fetchDeputado, 
+  fetchResumoDespesas, 
+  fetchResumoDiscursos, 
+  fetchResumoEventos,
+  fetchResumoHistorico 
+} from "../api/data";
 
 // --- Componentes ---
 
 import HeaderDeputado from "../components/HeaderDeputado";
-import AIButton from "../components/AIButton";
+import AIButton from "../components/AIButton"; 
+import Footer from "../components/Footer";
 
 // Carregamento lazy para os componentes das abas
 const TelaDespesas = lazy(() => import('../components/TelaDespesas'));
 const TelaDiscursos = lazy(() => import('../components/TelaDiscursos'));
 const TelaEventos = lazy(() => import('../components/TelaEventos'));
+// TelaHistorico removido pois não será mais uma aba
 
 // --- COMPONENTES DE CARREGAMENTO ---
-
-// 1. Este é o spinner para o CARREGAMENTO DA PÁGINA INTEIRA
 function PageLoadingSpinner() {
   return (
     <div className="page-loading-overlay">
@@ -27,74 +33,94 @@ function PageLoadingSpinner() {
   );
 }
 
-// 2. Este é o spinner para o CARREGAMENTO INTERNO DAS ABAS
-// (Não será usado se o fallback for null, mas mantemos para referência futura)
-function TabLoadingSpinner() {
-  return (
-    <div className="tab-loading-overlay">
-      <div className="loading-spinner-animation"></div>
-      <p className="loading-text">Aguarde enquanto carregamos as informações...</p>
-    </div>
-  );
-}
-// --- FIM DOS COMPONENTES DE CARREGAMENTO ---
-
-
 function PgDeputado() {
-  // --- Estados ---
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const [deputado, setDeputado] = useState(null);
   const [activeTab, setActiveTab] = useState("despesas");
-  const [resumosIA, setResumosIA] = useState({});
+  
+  // Estados da IA
+  const [resumosIA, setResumosIA] = useState({
+    despesas: null,
+    discursos: null,
+    eventos: null,
+    historico: null
+  });
   const [aiResponse, setAiResponse] = useState({ title: "", text: "", visible: false });
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // --- Efeito para buscar todos os dados ---
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        const [dataDeputado, resumoDesp, resumoDisc, resumoEvt] = await Promise.all([
-          fetchDeputado(id),
+        // 1. Busca os dados CRÍTICOS (Deputado) - Se falhar, erro fatal na página
+        const dataDeputado = await fetchDeputado(id);
+        if (!dataDeputado || !dataDeputado.result || !dataDeputado.result.dados) {
+            throw new Error("Dados do deputado não encontrados.");
+        }
+        setDeputado(dataDeputado.result.dados);
+        
+        // 2. Busca os dados OPCCIONAIS (IA) - Se falhar, a página continua a funcionar
+        // Usamos Promise.allSettled para que uma falha não pare tudo
+        const resultadosIA = await Promise.allSettled([
           fetchResumoDespesas(id),
           fetchResumoDiscursos(id),
-          fetchResumoEventos(id)
+          fetchResumoEventos(id),
+          fetchResumoHistorico(id)
         ]);
         
-        setDeputado(dataDeputado.result.dados);
+        // Processa os resultados com segurança
+        const [resDesp, resDisc, resEvt, resHist] = resultadosIA;
+
+        // Função auxiliar para extrair texto de forma segura
+        const extrairResumo = (resultado, nome) => {
+            if (resultado.status === 'fulfilled' && resultado.value && resultado.value.resumo) {
+                return resultado.value.resumo;
+            }
+            console.warn(`Falha ao carregar resumo de ${nome}:`, resultado.reason || "Dados inválidos");
+            return "Não foi possível gerar este resumo no momento. Por favor, tente novamente mais tarde.";
+        };
+
         setResumosIA({
-          despesas: resumoDesp.resumo,
-          discursos: resumoDisc.resumo,
-          eventos: resumoEvt.resumo
+          despesas: extrairResumo(resDesp, "despesas"),
+          discursos: extrairResumo(resDisc, "discursos"),
+          eventos: extrairResumo(resEvt, "eventos"),
+          historico: extrairResumo(resHist, "histórico")
         });
 
-      } catch (err) { // <-- CORREÇÃO: Bloco catch formatado corretamente
+      } catch (err) {
         setError(err);
-        console.error("Erro ao carregar dados da página:", err);
+        console.error("Erro crítico ao carregar página do deputado:", err);
       } finally {
         setLoading(false);
       }
     };
+    
     if (id) {
       fetchAllData();
+    } else {
+      setLoading(false);
+      setError(new Error("Nenhum deputado selecionado."));
     }
   }, [id]);
 
-  // --- Funções ---
+  // Função para abrir o chat da IA
   const handleIaButtonClick = (type) => {
     let title = "";
     let text = "";
+    
     if (type === 'discursos') {
       title = "Resumo dos Últimos Discursos";
       text = resumosIA.discursos;
-    } else if (type === 'propostas') {
-      title = "Resumo das Últimas Propostas";
-      text = "Funcionalidade de propostas ainda em desenvolvimento.";
+    } else if (type === 'historico') {
+      title = "Resumo do Histórico";
+      text = resumosIA.historico;
     } else if (type === 'eventos') {
       title = "Resumo dos Próximos Eventos";
       text = resumosIA.eventos;
     }
+    
     setAiResponse({ title, text, visible: true });
   };
 
@@ -110,25 +136,37 @@ function PgDeputado() {
     }
   };
 
-  // 3. USA O SPINNER DE PÁGINA INTEIRA AQUI
   if (loading) return <PageLoadingSpinner />; 
-  if (error) return <p>Ocorreu um erro ao carregar os dados: {error.message}</p>;
+  
+  if (error) {
+    return (
+      <div className="page-loading-overlay">
+        <p className="loading-text" style={{ color: 'red' }}>
+          Ocorreu um erro: {error.message}
+        </p>
+        <Link to="/home" style={{ marginTop: '20px', fontSize: '1rem' }}>
+          Voltar para a busca
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <>
       
       <div className="deputado-page-container">
+        {/* Header recebe a função de clique da IA */}
         <HeaderDeputado deputado={deputado} onIaButtonClick={handleIaButtonClick} />
 
         <div className="tabs-container">
           <ul className="tabs-nav">
+            {/* Aba de Histórico removida da navegação */}
             <li className={activeTab === 'despesas' ? 'active' : ''} onClick={() => setActiveTab('despesas')}>Despesas</li>
             <li className={activeTab === 'discursos' ? 'active' : ''} onClick={() => setActiveTab('discursos')}>Discursos</li>
             <li className={activeTab === 'eventos' ? 'active' : ''} onClick={() => setActiveTab('eventos')}>Eventos</li>
           </ul>
           
           <div className="tab-content">
-            {/* O fallback foi mudado para 'null' para não mostrar loading nas abas */}
             <Suspense fallback={null}>
               {renderTabContent()}
             </Suspense>
@@ -136,6 +174,7 @@ function PgDeputado() {
         </div>
       </div>
 
+      {/* Botão da IA */}
       <AIButton response={aiResponse} setResponse={setAiResponse} />
 
       

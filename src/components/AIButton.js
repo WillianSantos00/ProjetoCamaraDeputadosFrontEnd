@@ -1,6 +1,7 @@
 import React from 'react';
 import './AIButton.css';
 import { BsFillChatFill, BsX } from 'react-icons/bs';
+import ReactMarkdown from 'react-markdown';
 
 function AIButton({ response, setResponse }) {
   const { title, text, visible } = response;
@@ -12,7 +13,7 @@ function AIButton({ response, setResponse }) {
     } else {
       setResponse({ 
         title: 'Agente de IA', 
-        text: 'Clique em uma das perguntas no topo da página para ver um resumo gerado por IA.', 
+        text: 'Olá! Sou o PolitIA. Clique em uma das perguntas no topo da página para ver um resumo gerado por inteligência artificial sobre o deputado.', 
         visible: true 
       });
     }
@@ -37,7 +38,12 @@ function AIButton({ response, setResponse }) {
           </button>
         </div>
         <div className="ai-chat-body">
-          <p>{text}</p>
+          {/* CORREÇÃO AQUI: Envolvemos o ReactMarkdown numa div com a classe */}
+          <div className="markdown-content">
+            <ReactMarkdown>
+              {text || "Aguarde, a IA está a processar a sua resposta..."}
+            </ReactMarkdown>
+          </div>
         </div>
       </div>
     );

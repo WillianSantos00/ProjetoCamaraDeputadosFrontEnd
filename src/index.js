@@ -8,8 +8,6 @@ import Home from './routes/Home';
 import PgDeputado from './routes/PgDeputado'; // Página do Deputado (sem layout)
 import PaginaInstitucional from './routes/PaginaInstitucional';
 import TelaDespesas from './components/TelaDespesas';
-import TelaDiscursos from './components/TelaDiscursos';
-import TelaEventos from './components/TelaEventos';
 
 const router = createBrowserRouter([
     {
@@ -32,24 +30,17 @@ const router = createBrowserRouter([
         // Rota 2: Página do Deputado (sem layout)
         // Corresponde a /deputado E a /deputado?id=...
         path: "deputado", 
-        element: <App />,
-        children: [
+        element: <PgDeputado />,
+         children: [
             {
-                index: true,
-                element: <PgDeputado />
+                index: true, 
+                element: <PgDeputado/>
             },
             {
-                path: "despesas",
+                path: "despesas", 
                 element: <TelaDespesas />
-            },
-            {
-                path: "eventos",
-                element: <TelaEventos />
-            },
-            {
-                path: "discursos",
-                element: <TelaDiscursos />
             }
+            // A rota "deputado" foi movida para fora deste layout
         ]
     }
 ]);
