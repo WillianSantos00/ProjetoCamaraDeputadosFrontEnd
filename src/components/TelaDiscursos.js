@@ -1,33 +1,86 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { fetchDiscursos } from "../api/data"; // Busca discursos
-import "./TelaDespesas.css"; // Usa o mesmo CSS de Despesas para padronizar
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { startOfMonth, endOfMonth, parseISO, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
+import { fetchDiscursos } from "../api/data";
+import "./TelaDespesas.css"; // Reutiliza o CSS
+
+const ITEMS_PER_PAGE_LOCAL = 9;
+
+// Função para formatar YYYY-MM-DD
+const formatarData = (data) => {
+  if (!data) return "";
+  const d = new Date(data);
+  const ano = d.getFullYear();
+  const mes = String(d.getMonth() + 1).padStart(2, '0');
+  const dia = String(d.getDate()).padStart(2, '0');
+  return `${ano}-${mes}-${dia}`;
+};
 
 function TelaDiscursos() {
-    // Hooks para gerenciar o estado da página
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     
-    const [discursos, setDiscursos] = useState([]); // Estado para discursos
-    const [ultimaPagina, setUltimaPagina] = useState(1);
-    const [pagina, setPagina] = useState(1);
-    const [ano, setAno] = useState("");
-    const [mes, setMes] = useState("");
+    // Estados de Dados
+    const [todosDiscursos, setTodosDiscursos] = useState([]);
+    const [discursosExibidos, setDiscursosExibidos] = useState([]);
+    
+    const [paginaLocal, setPaginaLocal] = useState(1);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
+    // Estados do DatePicker
+    const [startDate, setStartDate] = useState(startOfMonth(new Date()));
+    const [endDate, setEndDate] = useState(endOfMonth(new Date()));
+    const [highlightDates, setHighlightDates] = useState([]);
+
+    // --- 1. BUSCA INTELIGENTE ---
     useEffect(() => {
-        const fetchDados = async () => {
+        const carregarDados = async () => {
+            if (!startDate || !endDate) return;
+
             setLoading(true);
+            setError(null);
+            
             try {
-                // Chama a função fetchDiscursos com os filtros corretos
-                const result = await fetchDiscursos(id, pagina, ano, mes);
-                if (result && result.result) {
-                    setDiscursos(result.result[0] || []); // Define os discursos
-                    setUltimaPagina(result.result[1] || 1);
-                } else {
-                    setDiscursos([]);
+                const dtInicio = formatarData(startDate);
+                const dtFim = formatarData(endDate);
+
+                // A API de discursos retorna tudo para o intervalo
+                const result = await fetchDiscursos(id, dtInicio, dtFim);
+                
+                let listaCompleta = [];
+                if (result && result.dados) {
+                    listaCompleta = result.dados;
                 }
+
+                // Filtragem Local Rigorosa (Garante que está no intervalo exato)
+                const start = startOfDay(startDate);
+                const end = endOfDay(endDate);
+
+                const filtradosFinal = listaCompleta.filter(d => {
+                    if (!d.dataHoraInicio) return true;
+                    try {
+                        const dataDisc = parseISO(d.dataHoraInicio);
+                        return isWithinInterval(dataDisc, { start, end });
+                    } catch (err) { return true; }
+                });
+
+                // Ordena por data (mais recente primeiro)
+                filtradosFinal.sort((a, b) => {
+                    return new Date(b.dataHoraInicio) - new Date(a.dataHoraInicio);
+                });
+
+                setTodosDiscursos(filtradosFinal);
+                
+                const dates = filtradosFinal
+                    .map(d => d.dataHoraInicio ? parseISO(d.dataHoraInicio) : null)
+                    .filter(Boolean);
+                setHighlightDates(dates);
+
+                setPaginaLocal(1);
+
             } catch (err) {
                 setError(err);
                 console.error("Erro ao buscar discursos:", err);
@@ -36,115 +89,86 @@ function TelaDiscursos() {
             }
         };
 
-        fetchDados();
-    }, [id, pagina, mes, ano]);
+        carregarDados();
+    }, [id, startDate, endDate]);
 
-    // Lógica para gerar os anos disponíveis
-    const listaAnos = [];
-    const anoAtual = new Date().getFullYear();
-    for (let i = anoAtual; i >= anoAtual - 4; i--) {
-        listaAnos.push(i);
-    }
+    // --- 2. PAGINAÇÃO LOCAL ---
+    useEffect(() => {
+        const inicio = (paginaLocal - 1) * ITEMS_PER_PAGE_LOCAL;
+        const fim = inicio + ITEMS_PER_PAGE_LOCAL;
+        setDiscursosExibidos(todosDiscursos.slice(inicio, fim));
+    }, [paginaLocal, todosDiscursos]);
 
-    const handleAnoChange = (event) => {
-        setAno(event.target.value);
-        setPagina(1);
+    const handleDateChange = (dates) => {
+        const [start, end] = dates;
+        setStartDate(start);
+        setEndDate(end);
     };
 
-    const handleMesChange = (event) => {
-        setMes(event.target.value);
-        setPagina(1);
-    };
-    
-    // --- LÓGICA DE PAGINAÇÃO (LIMITE 6) ---
+    // Cálculo da Paginação
+    const totalPaginasLocais = Math.ceil(todosDiscursos.length / ITEMS_PER_PAGE_LOCAL);
     const getPageNumbers = () => {
-      const MAX_PAGES = 6;
-      const total = ultimaPagina;
-      const current = pagina;
-      
-      if (total <= MAX_PAGES) {
-          return [...Array(total).keys()].map(n => n + 1);
-      }
-
-      let start = Math.max(1, current - 2);
-      let end = Math.min(total, current + 3);
-
-      if (current < 4) {
-          start = 1;
-          end = MAX_PAGES;
-      } else if (current > total - 3) {
-          start = total - MAX_PAGES + 1;
-          end = total;
-      } else {
-          start = current - 2;
-          end = current + 3;
-      }
-      
+      const MAX_BUTTONS = 6;
+      if (totalPaginasLocais <= MAX_BUTTONS) return [...Array(totalPaginasLocais).keys()].map(n => n + 1);
+      let start = Math.max(1, paginaLocal - 2);
+      let end = Math.min(totalPaginasLocais, paginaLocal + 3);
+      if (paginaLocal < 4) { start = 1; end = MAX_BUTTONS; } 
+      else if (paginaLocal > totalPaginasLocais - 3) { start = totalPaginasLocais - MAX_BUTTONS + 1; end = totalPaginasLocais; } 
+      else { start = paginaLocal - 2; end = paginaLocal + 3; }
       const pages = [];
-      for (let i = start; i <= end; i++) {
-          pages.push(i);
-      }
+      for (let i = start; i <= end; i++) pages.push(i);
       return pages;
     };
-
     const pageNumbersToDisplay = getPageNumbers();
-    // --- FIM DA LÓGICA DE PAGINAÇÃO ---
 
-    if (loading) return <p>Carregando discursos, por favor aguarde...</p>;
-    if (error) return <p>Ocorreu um erro ao carregar os discursos: {error.message}</p>;
+    if (loading) return <p style={{textAlign: 'center', padding: '20px'}}>Carregando discursos...</p>;
+    if (error) return <p style={{textAlign: 'center', color: 'red'}}>Ocorreu um erro: {error.message}</p>;
 
     return (
         <div className="despesas-container">
             <div className="despesas-header">
                 <h2>Discursos</h2>
-                <div className="filtros">
-                    <select value={mes} onChange={handleMesChange}>
-                        <option value="">Mês</option>
-                        <option value="1">Janeiro</option>
-                        <option value="2">Fevereiro</option>
-                        <option value="3">Março</option>
-                        <option value="4">Abril</option>
-                        <option value="5">Maio</option>
-                        <option value="6">Junho</option>
-                        <option value="7">Julho</option>
-                        <option value="8">Agosto</option>
-                        <option value="9">Setembro</option>
-                        <option value="10">Outubro</option>
-                        <option value="11">Novembro</option>
-                        <option value="12">Dezembro</option>
-                    </select>
-                    <select value={ano} onChange={handleAnoChange}>
-                        <option value="">Ano</option>
-                        {listaAnos.map((item) => <option key={item} value={item}>{item}</option>)}
-                    </select>
+                <div className="filtros-data">
+                    <DatePicker
+                        selected={startDate}
+                        onChange={handleDateChange}
+                        startDate={startDate}
+                        endDate={endDate}
+                        selectsRange
+                        isClearable={true}
+                        placeholderText="Selecione o intervalo"
+                        highlightDates={highlightDates}
+                        dateFormat="dd/MM/yyyy"
+                        className="date-picker-input"
+                    />
                 </div>
             </div>
 
             <div className="despesas-grid">
-                {discursos.length > 0 ? (
-                    discursos.map((discurso, index) => (
+                {discursosExibidos.length > 0 ? (
+                    discursosExibidos.map((discurso, index) => (
                         <div key={discurso.id || index} className="despesa-card">
-                            <span className="data">{discurso.dataHoraInicio || "Data não disponível"}</span>
-                            <h4>Resumo do Discurso</h4>
+                            <span className="data">{discurso.dataHoraInicio ? formatarData(discurso.dataHoraInicio) : "Data Indisponível"}</span>
+                            <h4>{discurso.tipoDiscurso || "Discurso em Plenário"}</h4>
                             <div className="detalhes">
-                                <p>{discurso.resumo || "Resumo não disponível."}</p>
+                                <p><strong>Resumo:</strong> {discurso.resumo || "Sem resumo disponível."}</p>
+                                <p><strong>Palavras-chave:</strong> {discurso.keywords || "-"}</p>
                             </div>
+                             {discurso.urlAudio && <a href={discurso.urlAudio} target="_blank" rel="noopener noreferrer">Ouvir Áudio →</a>}
                         </div>
                     ))
                 ) : (
-                    <p>Nenhum discurso encontrado para os filtros selecionados.</p>
+                    <p style={{gridColumn: "1 / -1", textAlign: "center"}}>Nenhum discurso encontrado para o período selecionado.</p>
                 )}
             </div>
             
-            {ultimaPagina > 1 && (
+            {!loading && !error && totalPaginasLocais > 1 && (
                 <div className="pagination">
-                    <button onClick={() => setPagina(p => Math.max(p - 1, 1))} disabled={pagina === 1}>&lt;</button>
+                    <button onClick={() => setPaginaLocal(p => Math.max(p - 1, 1))} disabled={paginaLocal === 1}>&lt;</button>
                     {pageNumbersToDisplay.map(num => (
-                        <button key={num} onClick={() => setPagina(num)} className={pagina === num ? 'active' : ''}>
-                            {num}
-                        </button>
+                        <button key={num} onClick={() => setPaginaLocal(num)} className={paginaLocal === num ? 'active' : ''}>{num}</button>
                     ))}
-                    <button onClick={() => setPagina(p => Math.min(p + 1, ultimaPagina))} disabled={pagina === ultimaPagina}>&gt;</button>
+                    <button onClick={() => setPaginaLocal(p => Math.min(p + 1, totalPaginasLocais))} disabled={paginaLocal === totalPaginasLocais}>&gt;</button>
                 </div>
             )}
         </div>

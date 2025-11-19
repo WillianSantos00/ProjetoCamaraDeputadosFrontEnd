@@ -5,6 +5,9 @@
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Quicksand', sans-serif;
+  /* Se houver abas coladas em baixo, mantemos border-radius 0 em baixo, 
+     se houver espaço, usamos 12px. No seu layout, as abas sobrepõem, então é flexível. */
+  border-radius: 0 0 12px 12px; 
 }
 
 .deputado-main-content {
@@ -14,18 +17,18 @@
   position: relative;
 }
 
-/* --- Coluna da Fotografia --- */
+/* --- Coluna da Foto --- */
 .deputado-foto {
   background-color: #0d2a58; /* Azul escuro */
   border-radius: 16px;
   padding: 10px;
-  border: 1px solid #3b82f6; /* Azul claro */
+  border: 2px solid #3b82f6; /* Azul claro */
   flex-shrink: 0;
 }
 
 .deputado-foto-inner {
-  width: 166px;
-  height: 166px;
+  width: 150px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,6 +134,7 @@
 .pergunte-ia-buttons {
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .pergunte-ia button {
@@ -160,17 +164,6 @@
     flex-direction: row;
     margin-top: 20px;
   }
-  .pergunte-ia {
-    flex-direction: column;
-    align-items: center;
-  }
-  .pergunte-ia-buttons {
-    flex-direction: column;
-    width: 100%;
-  }
-  .pergunte-ia button {
-    width: 100%;
-  }
   .deputado-contact-grid {
     grid-template-columns: 1fr;
     text-align: left;
@@ -178,5 +171,14 @@
     margin-right: auto;
     max-width: 300px;
   }
+  .pergunte-ia {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pergunte-ia-buttons {
+    width: 100%;
+  }
+  .pergunte-ia button {
+    flex-grow: 1;
+  }
 }
-

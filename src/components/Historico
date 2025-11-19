@@ -1,0 +1,23 @@
+import React from 'react';
+import './TelaDespesas.css'; 
+
+function Historico({ resumo }) {
+  return (
+    <div className="despesas-container">
+      <div className="despesas-header">
+        <h2>Histórico do Parlamentar</h2>
+      </div>
+      
+      <div className="despesa-card" style={{ lineHeight: '1.6', color: '#333' }}>
+        {/* Exibe o texto da IA ou mensagem padrão */}
+        {resumo ? (
+          <div style={{ whiteSpace: 'pre-line' }}>{resumo}</div>
+        ) : (
+          <p>Nenhum histórico disponível para este parlamentar no momento.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Historico;

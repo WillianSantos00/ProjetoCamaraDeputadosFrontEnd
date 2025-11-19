@@ -7,6 +7,7 @@ import App from './App'; // App (com Nav/Footer)
 import Home from './routes/Home';
 import PgDeputado from './routes/PgDeputado'; // Página do Deputado (sem layout)
 import PaginaInstitucional from './routes/PaginaInstitucional';
+import TelaDespesas from './components/TelaDespesas';
 
 const router = createBrowserRouter([
     {
@@ -29,7 +30,18 @@ const router = createBrowserRouter([
         // Rota 2: Página do Deputado (sem layout)
         // Corresponde a /deputado E a /deputado?id=...
         path: "deputado", 
-        element: <PgDeputado />
+        element: <PgDeputado />,
+         children: [
+            {
+                index: true, 
+                element: <PgDeputado/>
+            },
+            {
+                path: "despesas", 
+                element: <TelaDespesas />
+            }
+            // A rota "deputado" foi movida para fora deste layout
+        ]
     }
 ]);
 
