@@ -1,31 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Deputado from './routes/PgDeputado';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// Componentes e Páginas
+import App from './App'; // App (com Nav/Footer)
 import Home from './routes/Home';
+import PgDeputado from './routes/PgDeputado'; // Página do Deputado (sem layout)
+import PaginaInstitucional from './routes/PaginaInstitucional';
 
 const router = createBrowserRouter([
-
     {
+        // Rota 1: Layout Principal (com NavBar e Footer)
         path: "/",
-        element: <App />,
+        element: <App />, // App.js atua como layout
         children: [
             {
-        path: "/",
-        element: <Home />
+                index: true, // Define PaginaInstitucional como a rota para "/"
+                element: <PaginaInstitucional />
             },
             {
-        path: "/deputado",
-        element: <Deputado />
+                path: "home", // A página de busca de deputados
+                element: <Home />
             }
-                ]
+            // A rota "deputado" foi movida para fora deste layout
+        ]
+    },
+    {
+        // Rota 2: Página do Deputado (sem layout)
+        // Corresponde a /deputado E a /deputado?id=...
+        path: "deputado", 
+        element: <PgDeputado />
     }
-
-])
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <RouterProvider router={router} />
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
 );
-

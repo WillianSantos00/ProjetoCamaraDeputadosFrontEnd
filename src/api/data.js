@@ -4,7 +4,16 @@ const Urldeputado = "http://localhost:3000/api/v1/deputados/";
 const Urlgemini = "http://localhost:3000/api/v1/gemini/";
 const UrlUsuario = "http://localhost:3000/api/v1/usuario";
 
+const dados = axios.get(Urldeputado)
+  .then(function (response) {
+    return response.data
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
 
+ 
+const dadosResumo = await dados;
 
 export async function fetchDadosResumo() {
   try {
@@ -134,4 +143,4 @@ export async function fetchCadastro(email, telefone) {
   
 }
 
-
+export default dadosResumo
