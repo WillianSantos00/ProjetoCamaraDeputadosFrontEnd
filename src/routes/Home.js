@@ -7,6 +7,8 @@ import "./Home.css";
 import Card from "../components/Card";
 import CtaSection from "../components/CtaSection";
 
+console.log(dadosResumo)
+
 function Home() {
   const [searchParams] = useSearchParams();
   const queryParam = searchParams.get('q');

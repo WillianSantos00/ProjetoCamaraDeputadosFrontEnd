@@ -93,7 +93,9 @@ function TelaDiscursos() {
     if (loading) return <p>Carregando discursos, por favor aguarde...</p>;
     if (error) return <p>Ocorreu um erro ao carregar os discursos: {error.message}</p>;
 
+    
     return (
+        
         <div className="despesas-container">
             <div className="despesas-header">
                 <h2>Discursos</h2>

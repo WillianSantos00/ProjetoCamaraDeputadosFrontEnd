@@ -6,10 +6,9 @@ import "./PgDeputado.css";
 import { fetchDeputado, fetchResumoDespesas, fetchResumoDiscursos, fetchResumoEventos } from "../api/data";
 
 // --- Componentes ---
-import NavBar from "../components/NavBar";
+
 import HeaderDeputado from "../components/HeaderDeputado";
 import AIButton from "../components/AIButton";
-import Footer from "../components/Footer";
 
 // Carregamento lazy para os componentes das abas
 const TelaDespesas = lazy(() => import('../components/TelaDespesas'));
@@ -117,7 +116,6 @@ function PgDeputado() {
 
   return (
     <>
-      <NavBar />
       
       <div className="deputado-page-container">
         <HeaderDeputado deputado={deputado} onIaButtonClick={handleIaButtonClick} />
@@ -140,7 +138,7 @@ function PgDeputado() {
 
       <AIButton response={aiResponse} setResponse={setAiResponse} />
 
-      <Footer />
+      
     </>
   );
 }

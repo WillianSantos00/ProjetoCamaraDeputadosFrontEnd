@@ -6,7 +6,7 @@ const UrlUsuario = "http://localhost:3000/api/v1/usuario";
 
 
 
-const dados = axios.get(Urldeputado)
+const dados = axios.post(Urldeputado)
   .then(function (response) {
     return response.data
   })
